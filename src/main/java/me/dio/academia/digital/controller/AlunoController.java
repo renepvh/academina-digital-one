@@ -39,7 +39,7 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
-    public Aluno update(@PathVariable Long id, @RequestBody AlunoUpdateForm updateForm) {
+    public Aluno update(@PathVariable Long id,@Valid  @RequestBody AlunoUpdateForm updateForm) {
         return service.update(id, updateForm);
     }
 }
