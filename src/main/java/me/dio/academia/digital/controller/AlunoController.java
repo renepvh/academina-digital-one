@@ -22,6 +22,11 @@ public class AlunoController {
         return service.getAll(datadeNascimento);
     }
 
+    @GetMapping("/{id}")
+    public Aluno get(@PathVariable Long id) {
+        return service.get(id);
+    }
+
     @PostMapping
     public Aluno create(@Valid @RequestBody AlunoForm form) {
         return service.create(form);
