@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AlunoServiceImpl implements IAlunoService {
@@ -47,7 +48,15 @@ public class AlunoServiceImpl implements IAlunoService {
 
     @Override
     public Aluno update(Long id, AlunoUpdateForm formUpdate) {
-        return null;
+        Aluno aluno = repository.findById(id).get();
+        if (aluno != null) {
+            aluno.setNome(formUpdate.getNome());
+            aluno.setBairro(formUpdate.getBairro());
+            aluno.setDataDeNascimento(formUpdate.getDataDeNascimento());
+        } else {
+            throw new NoSuchElementException("aluno nao existe");
+        }
+        return repository.save(aluno);
     }
 
     @Override

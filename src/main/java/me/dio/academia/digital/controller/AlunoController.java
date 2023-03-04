@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import me.dio.academia.digital.entity.Aluno;
 import me.dio.academia.digital.entity.AvaliacaoFisica;
 import me.dio.academia.digital.entity.form.AlunoForm;
+import me.dio.academia.digital.entity.form.AlunoUpdateForm;
 import me.dio.academia.digital.service.impl.AlunoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,10 @@ public class AlunoController {
     @GetMapping("/avaliacoes/{id}")
     public List<AvaliacaoFisica> getAllAvaliacaoFisicaId(@PathVariable Long id) {
         return service.getAllAvaliacaoFisicaId(id);
+    }
+
+    @PutMapping("/{id}")
+    public Aluno update(@PathVariable Long id, @RequestBody AlunoUpdateForm updateForm) {
+        return service.update(id, updateForm);
     }
 }
