@@ -4,6 +4,7 @@ import me.dio.academia.digital.entity.Aluno;
 import me.dio.academia.digital.entity.AvaliacaoFisica;
 import me.dio.academia.digital.entity.form.AlunoForm;
 import me.dio.academia.digital.entity.form.AlunoUpdateForm;
+import me.dio.academia.digital.handlerErrors.EntityNotFoundException;
 import me.dio.academia.digital.infra.utils.JavaTimeUtils;
 import me.dio.academia.digital.repository.AlunoRepository;
 import me.dio.academia.digital.service.IAlunoService;
@@ -32,7 +33,10 @@ public class AlunoServiceImpl implements IAlunoService {
 
     @Override
     public Aluno get(Long id) {
-        return repository.getReferenceById(id);
+
+        return repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Id nao encontrado " + id)
+        );
     }
 
     @Override
@@ -48,13 +52,13 @@ public class AlunoServiceImpl implements IAlunoService {
 
     @Override
     public Aluno update(Long id, AlunoUpdateForm formUpdate) {
-        Aluno aluno = repository.findById(id).get();
+        Aluno aluno = repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Aluno com esse Id= " + id + " nao existe")
+        );
         if (aluno != null) {
             aluno.setNome(formUpdate.getNome());
             aluno.setBairro(formUpdate.getBairro());
             aluno.setDataDeNascimento(formUpdate.getDataDeNascimento());
-        } else {
-            throw new NoSuchElementException("aluno nao existe");
         }
         return repository.save(aluno);
     }
