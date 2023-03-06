@@ -4,6 +4,7 @@ import me.dio.academia.digital.entity.Aluno;
 import me.dio.academia.digital.entity.AvaliacaoFisica;
 import me.dio.academia.digital.entity.form.AvaliacaoFisicaForm;
 import me.dio.academia.digital.entity.form.AvaliacaoFisicaUpdateForm;
+import me.dio.academia.digital.handlerErrors.EntityNotFoundException;
 import me.dio.academia.digital.repository.AlunoRepository;
 import me.dio.academia.digital.repository.AvaliacaoFisicaRepository;
 import me.dio.academia.digital.service.IAvaliacaoFisicaService;
@@ -38,13 +39,25 @@ public class AvaliacaoFisicaServiceImpl implements IAvaliacaoFisicaService {
     }
 
     @Override
-    public List<AvaliacaoFisica> getAll() {
-        return null;
+    public List<AvaliacaoFisica> getAll(String altura) {
+        if(altura == null) {
+            return avaliacaoFisicaRepository.findAll();
+        } else {
+            return avaliacaoFisicaRepository.findByAltura(altura);
+        }
     }
 
     @Override
     public AvaliacaoFisica update(Long id, AvaliacaoFisicaUpdateForm formUpdate) {
-        return null;
+        AvaliacaoFisica avaliacao = avaliacaoFisicaRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Avaliacao nao encontrada com esse id=" + id)
+                );
+        if (avaliacao != null) {
+            avaliacao.setAltura(formUpdate.getAltura());
+            avaliacao.setPeso(formUpdate.getPeso());
+        }
+        return avaliacaoFisicaRepository.save(avaliacao);
+
     }
 
     @Override
