@@ -65,7 +65,10 @@ public class AlunoServiceImpl implements IAlunoService {
 
     @Override
     public void delete(Long id) {
-
+        Aluno aluno = repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Aluno com esse Id= " + id + " nao pode ser deletado")
+        );
+        repository.delete(aluno);
     }
 
     @Override

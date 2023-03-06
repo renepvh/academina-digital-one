@@ -42,4 +42,9 @@ public class AlunoController {
     public Aluno update(@PathVariable Long id,@Valid  @RequestBody AlunoUpdateForm updateForm) {
         return service.update(id, updateForm);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
 }
